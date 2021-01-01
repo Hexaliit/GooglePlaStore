@@ -25,6 +25,6 @@ Route::get('categories','App\Http\Controllers\AppController@showCategories');
 Route::get('genres','App\Http\Controllers\AppController@showGenres');
 Route::get('category/{category}','App\Http\Controllers\AppController@showByCategory');
 Route::get('rating','App\Http\Controllers\AppController@showByRating');
-Route::get('updates','App\Http\Controllers\AppController@showLastUpdates');
 Route::get('search','App\Http\Controllers\AppController@search');
 Route::get('test','App\Http\Controllers\AppController@create');
+Route::post('comment/{id}','App\Http\Controllers\AppController@postComment');

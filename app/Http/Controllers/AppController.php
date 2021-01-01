@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Imports\AppsImport;
 use App\Imports\CommentsImport;
 use App\Models\App;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
@@ -84,14 +86,6 @@ class AppController extends Controller
         $apps = App::where('genres', $genre)->paginate(20);
         return response()->json($apps, 200);
     }
-    public function comments($id)
-    {
-        $app = App::find($id);
-        $appName = $app->name;
-        $comments = Comment::where('app', $appName)->paginate(20);
-        return response()->json($comments, 200);
-    }
-
     public function showByRating(Request $request)
     {
         if ($request->from < 0 && $request->to > 5) {
@@ -100,16 +94,44 @@ class AppController extends Controller
         $apps = App::where('rating', '>', $request->from)->where('rating', '<', $request->to)->paginate(20);
         return response()->json($apps, 200);
     }
-
     public function showFree()
     {
         $apps = App::where('type', 'Free')->paginate(20);
         return response()->json($apps, 200);
     }
-
     public function showPaid()
     {
         $apps = App::where('type', 'Paid')->orderBy('price', 'asc')->paginate(20);
         return response()->json($apps, 200);
+    }
+    public function postComment(Request $request,$id)
+    {
+        $rules = [
+            'review' => 'required|max:100|min:3',
+            'sentiment' => 'required',
+            'sentiment_polarity' => 'required',
+            'sentiment_subjectivity' => 'required'
+        ];
+        $messages = [
+            'review.required' => 'این بخش الزامی است',
+            'sentiment.required' => 'این بخش الزامی است',
+            'sentiment_polarity.required' => 'این بخش الزامی است',
+            'sentiment_subjectivity.required' => 'این بخش الزامی است',
+            'review.min' => 'نظر باید حداقل 3 کاراکتر باشد',
+            'review.max' => 'نظر باید حداکثر 100 کاراکتر باشد',
+        ];
+        $validator = Validator::make($request->all(), $rules ,$messages);
+        if ($validator->fails())
+        {
+            return response()->json($validator->errors(),400);
+        }
+        $appInfo = App::find($id);
+        $appName = $appInfo->name;
+        $credentials = $request->only('sentiment_subjectivity','sentiment_polarity','sentiment','review');
+        $credentials['app'] = $appName;
+        $credentials = array_reverse($credentials);
+        $comment = Comment::create($credentials);
+        return response()->json($comment,201);
+
     }
 }
