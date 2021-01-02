@@ -46,36 +46,16 @@ class AppController extends Controller
         $comments = Comment::where('app', $app->name)->paginate(20);
         return ['app' => $app, 'comments' => $comments];
     }
-
     public function showCategories()
     {
-        $apps = App::select('category')->groupBy('category')->get();
-        $apps = $this->toArr($apps,'category');
-        $apps = array_unique($apps);
-        return response()->json($apps, 200);
+        $apps = App::select('category')->groupBy('category')->get()->pluck('category');
+        return $apps;
     }
-
     public function showGenres()
     {
-        $apps = App::select('genres')->groupBy('genres')->get();
-        $apps = $this->toArr($apps,'genres');
-        $apps = array_unique($apps);
-        return response()->json($apps, 200);
+        $apps = App::select('genres')->groupBy('genres')->get()->pluck('genres');
+        return $apps;
     }
-
-    private function toArr($object,$ref)
-    {
-        $arr = [];
-        foreach ($object as $obj) {
-            if (str_contains($obj[$ref], ';')) {
-                $arr[] = explode(';', $obj[$ref])[1];
-            } else {
-                $arr[] = $obj[$ref];
-            }
-        }
-        return $arr;
-    }
-
     public function showByCategory($category)
     {
         $apps = App::where('category', $category)->paginate(20);
