@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::get('apps','App\Http\Controllers\AppController@index');
 Route::get('apps/free','App\Http\Controllers\AppController@showFree');
 Route::get('apps/paid','App\Http\Controllers\AppController@showPaid');

@@ -13,12 +13,12 @@ class AppTest extends TestCase
      *
      * @return void
      */
-/*    public function testExample()
+    public function testExample()
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
-    }*/
+    }
     public function testShowAllAppsSuccessfully()
     {
         $response = $this->json('GET','api/apps');
@@ -113,7 +113,9 @@ class AppTest extends TestCase
     }
     public function testShowAppsByRatingSuccessfully()
     {
-        $response = $this->json('GET','api/rating?from=3&to=4');
+        $from = 3;
+        $to = 4;
+        $response = $this->json('GET','api/rating?from='.$from.'&to='.$to);
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'current_page',
@@ -155,5 +157,45 @@ class AppTest extends TestCase
             'sentiment_subjectivity' => '1'
         ]);
         $response->assertStatus(201);
+    }
+    public function testShowFreeAppsSuccessfully()
+    {
+        $response = $this->json('GET','api/apps/free');
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'current_page',
+                'data',
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total'
+            ]);
+    }
+    public function testShowPaidAppsSuccessfully()
+    {
+        $response = $this->json('GET','api/apps/paid');
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'current_page',
+                'data',
+                'first_page_url',
+                'from',
+                'last_page',
+                'last_page_url',
+                'links',
+                'next_page_url',
+                'path',
+                'per_page',
+                'prev_page_url',
+                'to',
+                'total'
+            ]);
     }
 }
