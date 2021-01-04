@@ -13,6 +13,7 @@ The Project Requires Following Dependencies:
 Follow Steps Below To Run The Project:
 1. Clone this repository
 2. Go to [front](https://mega.nz/folder/90xHzAKD#sSZwmY1IvJ5br_62f0-Abw) and download the front_end.zip file
+
 3.Go to lib folder in front.zip and copy all code in same name dart file in your project
 4.go to pubspec.yaml file and add copy all code in your same project file 
 5.press get dependencies button
