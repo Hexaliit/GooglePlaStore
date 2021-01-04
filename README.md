@@ -5,8 +5,8 @@
 #### Installing
 The Project Requires Following Dependencies:
 
-- [composer] (https://getcomposer.org)
-- [laravel] (https://laravel.com/)
+- [composer](https://getcomposer.org)
+- [laravel](https://laravel.com/)
 
 
 ### Production
