@@ -1,4 +1,4 @@
-# GooglePlaStore
+# GooglePlayStore
 
 ### inforamation of Google Play Store Applications
 
